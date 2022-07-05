@@ -1,5 +1,5 @@
-import { ApplicationService } from './common/ApplicationService';
-import { HTTPService } from './common/HTTPService';
+import { ApplicationService } from "common/ApplicationService";
+import { HTTPService } from "common/HTTPService";
 
 class Container {
   private readonly applicationServiceInstance;

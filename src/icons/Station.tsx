@@ -1,3 +1,5 @@
+import React from 'react'
+
 export function Station() {
   return (
     <svg width="25" height="31" viewBox="0 0 25 31" fill="none" xmlns="http://www.w3.org/2000/svg">

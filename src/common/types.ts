@@ -4,3 +4,8 @@ export type Page<T> = {
   totalElements: number;
   size: number;
 };
+
+export type Sort = {
+  field?: string;
+  order?: 'asc' | 'desc';
+};

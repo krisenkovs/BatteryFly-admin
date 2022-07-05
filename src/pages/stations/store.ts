@@ -1,33 +1,18 @@
-import { fromPromise, PromiseObserver } from 'helpers/PromiseObserver';
-import { Page } from 'common/types';
+
 import { StationType } from './types';
-import { action, makeObservable, observable } from 'mobx';
-import { container } from 'container';
-import { API } from 'constants/api';
+import { makeObservable } from 'mobx';
+import { API } from 'constant/api';
+import { TableStore } from 'common/TableStore';
 
-class Store {
-  private readonly httpService;
-
-  dataPromise?: PromiseObserver<Page<StationType>> = undefined;
-
+class Store extends TableStore<StationType> {
   constructor() {
-    this.httpService = container.httpService;
+    super();
 
-    makeObservable(this, {
-      dataPromise: observable,
-      fetchData: action.bound,
-      destroy: action.bound,
-    });
+    makeObservable(this, {});
   }
 
-  fetchData() {
-    this.dataPromise = fromPromise<Page<StationType>>(
-      this.httpService.get<Page<StationType>>(`${API.STATION}/all`)
-    );
-  }
-
-  destroy() {
-    this.dataPromise = undefined;
+  override api() {
+    return this.httpService.get(`${API.STATION}/all${this.query}`);
   }
 }
 

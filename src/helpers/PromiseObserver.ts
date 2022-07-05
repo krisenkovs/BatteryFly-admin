@@ -9,7 +9,7 @@ enum PROMISE_TYPE {
 
 export class PromiseObserver<T> {
   state: PROMISE_TYPE = PROMISE_TYPE.PENDING;
-  value?: T;
+  value?: T = undefined;
 
   constructor(promise: AxiosPromise<T>) {
     makeObservable(this, {

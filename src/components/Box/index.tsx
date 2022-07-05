@@ -1,3 +1,4 @@
+import React from 'react'
 import { CSSProperties, FC, PropsWithChildren, useMemo } from 'react';
 
 type Props = PropsWithChildren<{
