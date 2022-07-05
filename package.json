@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "smartcrm",
   "main": "index.js",
-  "homepage": "https://krisenkovs.github.io",
+  "homepage": "https://krisenkovs.github.io/BatteryFly-admin",
   "repository": {
     "type": "git",
     "url": "https://github.com/krisenkovs/BatteryFly-admin"
