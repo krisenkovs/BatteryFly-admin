@@ -6,7 +6,7 @@ export type StationType = {
   maxPower?: string;
   isFastCharge?: boolean;
   rate?: number;
-  coonectorType?: string;
+  coonectorType?: Record<string, boolean>;
   linkQr?: string;
   images?: {
     id?: number;

@@ -1,85 +1,89 @@
-import React from 'react'
-import { CSSProperties, FC, PropsWithChildren, useMemo } from 'react';
+import classnames from 'classnames';
+import React, { PropsWithChildren, FC, useMemo, CSSProperties } from 'react';
+
+type Sizes = 'xss' | 'xs' | 'sm' | 'md' | 'lg';
 
 type Props = PropsWithChildren<{
-  pT?: number;
-  pB?: number;
-  pL?: number;
-  pR?: number;
-  flexDirection?: CSSProperties['flexDirection'];
-  aI?: CSSProperties['alignItems'];
-  jC?: CSSProperties['justifyContent'];
-  flex?: CSSProperties['flex'];
-  height?: CSSProperties['height'];
-  width?: CSSProperties['width'];
+  paddingLeft?: Sizes;
+  paddingRight?: Sizes;
+  paddingTop?: Sizes;
+  paddingBottom?: Sizes;
+  marginLeft?: Sizes;
+  marginRight?: Sizes;
+  marginTop?: Sizes;
+  marginBottom?: Sizes;
+  overflow?: 'hidden' | 'hidden-x';
+  flexDirection?: 'row' | 'column';
+  disableFlexWrap?: boolean;
+  className?: string;
+  flex?: number | string;
   style?: CSSProperties;
-  position?: CSSProperties['position'];
+  fullHeight?: boolean;
 }>;
 
 export const Box: FC<Props> = ({
-  children,
-  height,
-  width,
+  paddingBottom,
+  paddingTop,
+  paddingRight,
+  paddingLeft,
+  marginLeft,
+  marginTop,
+  marginRight,
+  marginBottom,
+  overflow,
+  flexDirection = 'row',
+  className,
+  disableFlexWrap,
   flex,
-  pT,
-  pB,
-  pL,
-  pR,
-  flexDirection,
-  aI,
-  jC,
   style,
-  position = 'relative',
+  children,
+  fullHeight,
 }) => {
-  const styles: CSSProperties = useMemo(() => {
-    const values: CSSProperties = { display: 'flex' };
+  const classes = useMemo(() => {
+    return classnames('box_flex', {
+      [`box_padding_left-${paddingLeft}`]: paddingLeft,
+      [`box_padding_right-${paddingRight}`]: paddingRight,
+      [`box_padding_top-${paddingTop}`]: paddingTop,
+      [`box_padding_bottom-${paddingBottom}`]: paddingBottom,
+      [`box_margin_top-${marginTop}`]: marginTop,
+      [`box_margin_bottom-${marginBottom}`]: marginBottom,
+      [`box_margin_left-${marginLeft}`]: marginLeft,
+      [`box_margin_right-${marginRight}`]: marginRight,
+      [`box_overflow-${overflow}`]: overflow,
+      [`box_flex_direction-${flexDirection}`]: flexDirection,
+      [`box_flex_noWrap`]: disableFlexWrap,
+      [`box_height_100`]: fullHeight,
+      [`${className}`]: className,
+    });
+  }, [
+    paddingBottom,
+    paddingTop,
+    paddingRight,
+    paddingLeft,
+    marginLeft,
+    marginTop,
+    marginRight,
+    marginBottom,
+    overflow,
+    flexDirection,
+    disableFlexWrap,
+    className,
+    fullHeight,
+  ]);
 
-    if (pT !== undefined) {
-      values['paddingTop'] = `${pT}px`;
-    }
-
-    if (pB !== undefined) {
-      values['paddingBottom'] = `${pB}px`;
-    }
-
-    if (pL !== undefined) {
-      values['paddingLeft'] = `${pL}px`;
-    }
-
-    if (pR !== undefined) {
-      values['paddingRight'] = `${pR}px`;
-    }
-
-    if (flexDirection !== undefined) {
-      values['flexDirection'] = flexDirection;
-    }
-
-    if (aI !== undefined) {
-      values['alignItems'] = aI;
-    }
-
-    if (jC !== undefined) {
-      values['justifyContent'] = jC;
-    }
+  const styles = useMemo(() => {
+    const values: CSSProperties = {};
 
     if (flex !== undefined) {
       values['flex'] = flex;
     }
 
-    if (height !== undefined) {
-      values['height'] = height;
-    }
+    return style ? { ...values, ...style } : values;
+  }, [flex, style]);
 
-    if (width !== undefined) {
-      values['width'] = width;
-    }
-
-    if (position !== undefined) {
-      values['position'] = position;
-    }
-
-    return { ...values, ...style };
-  }, [pT, pB, pR, pL, flexDirection, aI, jC, flex, height, width, style, position]);
-
-  return <div style={styles}>{children}</div>;
+  return (
+    <div className={classes} style={styles}>
+      {children}
+    </div>
+  );
 };

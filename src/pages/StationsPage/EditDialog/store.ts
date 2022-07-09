@@ -1,21 +1,22 @@
-import { action, makeObservable, observable } from 'mobx';
 import { DialogStore } from 'common/DialogStore';
-import { fromPromise, PromiseObserver } from "helpers/PromiseObserver";
-import { StationType } from '../types';
-import { API } from "constant";
+import { API } from 'constant';
+import { fromPromise, PromiseObserver } from 'helpers/PromiseObserver';
+import { action, makeObservable, observable } from 'mobx';
 
-class Store extends DialogStore {
+import { StationType } from '../types';
+
+class Store extends DialogStore<StationType> {
   savePromise?: PromiseObserver<void> = undefined;
 
   constructor() {
     super();
     makeObservable(this, {
       savePromise: observable,
-      createItem: action.bound,
+      saveItem: action.bound,
     });
   }
 
-  createItem(entity: StationType) {
+  saveItem(entity: StationType) {
     this.savePromise = fromPromise(this.httpService.post(API.STATION, entity));
   }
 

@@ -1,50 +1,58 @@
-@import '~antd/lib/style/default.less';
-@import '~antd/lib/form/style/index.less';
-@import '~antd/lib/input/style/index.less';
-@import '~antd/lib/button/style/index.less';
-@import '~antd/lib/menu/style/index.less';
-@import '~antd/lib/typography/style/index.less';
-@import '~antd/lib/checkbox/style/index.less';
-@import '~antd/lib/grid/style/index.less';
-@import '~antd/lib/table/style/index.less';
-@import '~antd/lib/switch/style/index.less';
-@import '~antd/lib/modal/style/index.less';
-@import '~antd/lib/input-number/style/index.less';
-@import '~antd/lib/carousel/style/index.less';
-@import '~antd/lib/tooltip/style/index.less';
+@import '~antd/dist/antd.less';
 
-@font-family: 'Mulish', sans-serif;
-
-@modal-body-padding:0;
-
-@form-item-margin-bottom: 16px;
+.ant-modal-wrap {
+  overflow: hidden;
+}
 
 .ant-table-wrapper,
 .ant-spin-nested-loading,
-.ant-spin-container,.ant-table-container {
-  flex: 1;
+.ant-spin-container {
   display: flex;
   flex-direction: column;
+  flex: 1;
 }
 
 .ant-table {
   flex: 1;
-  height: 100%;
+}
 
-  .ant-table-container{
-    height: 100%;
+.ant-carousel {
+  .slick-dots {
+    margin-bottom: 0;
+    padding-top: @padding-sm;
+    bottom: 0;
+    align-items: center;
+    display: flex !important;
+    justify-content: center;
+    padding-left: 0;
+    list-style: none;
+    position: relative;
+    min-height: 24px;
 
-    .ant-table-content{
-      height: 100%;
+    li.slick-active {
+      height: 12px;
+      width: 12px;
+      border-radius: 12px;
 
-      table{
-        height: 100%;
+      button {
+        height: 12px;
+        width: 12px;
+        border-radius: 12px;
+        background: @primary-color;
+      }
+    }
+
+    li {
+      height: 12px;
+      width: 12px;
+      border-radius: 12px;
+
+      button {
+        height: 12px;
+        background: @primary-3;
+        border-radius: 12px;
+        opacity: 1;
       }
     }
   }
 }
-
-.ant-modal-wrap{
-  overflow: hidden;
-}
-

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export class HTTPService {
-  private instance = axios.create();
+  private instance = axios.create({ baseURL: 'http://174.138.106.191:8080' });
 
   constructor() {
     this.instance.interceptors.response.use(
@@ -9,18 +9,17 @@ export class HTTPService {
         return response;
       },
       function (error) {
-        console.log(error);
         return Promise.reject(error);
       },
     );
   }
 
-  get(path: string) {
-    return this.instance.get(path);
+  get<O>(path: string) {
+    return this.instance.get(path) as Promise<O>;
   }
 
-  post<I>(path: string, data: I) {
-    return this.instance.post(path, data);
+  post<I, O>(path: string, data: I) {
+    return this.instance.post(path, data) as Promise<O>;
   }
 
   put<I>(path: string, data: I) {
@@ -28,6 +27,6 @@ export class HTTPService {
   }
 
   delete(path: string) {
-    return this.instance.delete(path);
+    return this.instance.delete(path) as Promise<void>;
   }
 }

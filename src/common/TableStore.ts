@@ -2,7 +2,6 @@ import { fromPromise, PromiseObserver } from 'helpers/PromiseObserver';
 import { Page, Sort } from 'common/types';
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
 import { container } from 'container';
-import { AxiosPromise } from 'axios';
 import { SorterResult } from 'antd/lib/table/interface';
 
 export abstract class TableStore<T> {
@@ -34,7 +33,6 @@ export abstract class TableStore<T> {
       () => `${this.page}_${this.size}`,
       (value) => {
         this.fetchData();
-        console.log(value);
       }
     );
 
@@ -49,7 +47,7 @@ export abstract class TableStore<T> {
     );
   }
 
-  abstract api(): AxiosPromise<Page<T>>;
+  abstract api(): Promise<Page<T>>;
 
   fetchData() {
     this.dataPromise = fromPromise<Page<T>>(this.api());

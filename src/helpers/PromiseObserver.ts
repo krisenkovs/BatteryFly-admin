@@ -1,5 +1,5 @@
+import { AxiosResponse } from 'axios';
 import { makeObservable, observable, runInAction } from 'mobx';
-import { AxiosPromise, AxiosResponse } from 'axios';
 
 enum PROMISE_TYPE {
   PENDING,
@@ -11,23 +11,23 @@ export class PromiseObserver<T> {
   state: PROMISE_TYPE = PROMISE_TYPE.PENDING;
   value?: T = undefined;
 
-  constructor(promise: AxiosPromise<T>) {
+  constructor(promise: Promise<T>) {
     makeObservable(this, {
       state: observable,
       value: observable,
     });
 
     promise
-      .then((response: AxiosResponse<T>) => {
+      .then((response: unknown) => {
         runInAction(() => {
           this.state = PROMISE_TYPE.FULFILLED;
-          this.value = response?.data;
+          this.value = (response as AxiosResponse<T>)?.data;
         });
       })
       .catch(() =>
         runInAction(() => {
           this.state = PROMISE_TYPE.ERROR;
-        })
+        }),
       );
   }
 
@@ -44,6 +44,6 @@ export class PromiseObserver<T> {
   }
 }
 
-export function fromPromise<T>(promise: AxiosPromise<T>) {
+export function fromPromise<T>(promise: Promise<T>) {
   return new PromiseObserver(promise);
 }

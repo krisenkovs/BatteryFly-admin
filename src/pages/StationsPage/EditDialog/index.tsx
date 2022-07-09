@@ -1,38 +1,50 @@
-import React, { FC, useEffect } from 'react'
-import { Carousel, Col, Form, Input, InputNumber, message, Modal, Row, Switch } from 'antd';
+import { Carousel, Col, Form, Image, Input, InputNumber, message, Modal, Row, Switch } from 'antd';
 import { observer } from 'mobx-react';
-import { store } from './store';
+import { ConnectorField } from 'pages/StationsPage/EditDialog/ConnectorField';
 import { QRCodeSVG } from 'qrcode.react';
-import { Text } from 'components/Text';
-import { StationType } from '../types';
+import React, { FC, useEffect } from 'react';
+
 import { Box } from 'components/Box';
-import Checkbox from 'antd/lib/checkbox/Checkbox';
+import { Text } from 'components/Text';
+import { Uploader } from 'components/Uploader';
+
+import { StationType } from '../types';
+import { store } from './store';
 
 type Props = {
   onSuccess?: () => void;
 };
 
 export const EditDialog: FC<Props> = observer(({ onSuccess }) => {
-  const { visible, destroy, close, createItem, savePromise } = store;
+  const { visible, destroy, close, saveItem, savePromise, data } = store;
 
   const [form] = Form.useForm<StationType>();
 
   useEffect(() => {
-    return () => destroy();
-  }, [destroy]);
+    if (visible) {
+      form.resetFields();
+      data && form.setFieldsValue(data);
+    } else {
+      destroy();
+    }
+  }, [visible, data]);
 
   useEffect(() => {
     if (savePromise?.error) {
       message.error('Произошла ошибка');
     }
+  }, [savePromise?.error]);
+
+  useEffect(() => {
     if (savePromise?.fulfilled) {
+      close();
       message.success('Зарядная станция успешно добавлена');
       onSuccess?.();
     }
-  }, [savePromise?.error, savePromise?.fulfilled, onSuccess]);
+  }, [savePromise?.fulfilled]);
 
   function handleOk() {
-    form.validateFields().then((values) => createItem(values));
+    form.validateFields().then((values) => saveItem(values));
   }
 
   return (
@@ -40,23 +52,24 @@ export const EditDialog: FC<Props> = observer(({ onSuccess }) => {
       visible={visible}
       onCancel={close}
       onOk={handleOk}
-      okText="Создать"
+      okText="Сохранить"
       cancelText="Отмена"
       centered
-      width={800}
+      width={900}
       maskClosable={false}
       title={
         <Text weight={500} size={20} lineHeight={24}>
-          Новая зарядная станция
+          {data?.id ? 'Редактирование' : 'Новая зарядная станция'}
         </Text>
       }
       forceRender
       destroyOnClose
     >
-      <Box pL={20} pR={20} pT={8} flexDirection="column">
+      <Box paddingLeft="lg" paddingRight="lg" paddingTop="xs" flexDirection="column">
         <Form layout="vertical" form={form} validateMessages={{ required: 'Заполните поле' }}>
           <Row gutter={16}>
             <Col span={12}>
+              <Form.Item name="id" noStyle />
               <Form.Item name="name" label="Наименование" rules={[{ required: true }]}>
                 <Input maxLength={255} />
               </Form.Item>
@@ -65,11 +78,7 @@ export const EditDialog: FC<Props> = observer(({ onSuccess }) => {
               </Form.Item>
               <Row gutter={32}>
                 <Col span={12}>
-                  <Form.Item
-                    name="maxPower"
-                    label="Максимальная мощность"
-                    rules={[{ required: true }]}
-                  >
+                  <Form.Item name="maxPower" label="Максимальная мощность" rules={[{ required: true }]}>
                     <Input maxLength={255} />
                   </Form.Item>
                 </Col>
@@ -81,8 +90,8 @@ export const EditDialog: FC<Props> = observer(({ onSuccess }) => {
               </Row>
               <Row gutter={32}>
                 <Col span={12}>
-                  <Form.Item name="rate" label="Курс BYN/kW*h" rules={[{ required: true }]} >
-                    <InputNumber precision={2} min={0} max={99999999999} step={0.01} style={{width:'100%'}}/>
+                  <Form.Item name="rate" label="Курс BYN/kW*h" rules={[{ required: true }]}>
+                    <InputNumber precision={2} min={0} max={99999999999} step={0.01} style={{ width: '100%' }} />
                   </Form.Item>
                 </Col>
                 <Col span={12}>
@@ -96,24 +105,38 @@ export const EditDialog: FC<Props> = observer(({ onSuccess }) => {
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Box flexDirection="column">
+              <Box flexDirection="column" fullHeight>
                 <Row gutter={16}>
-                  <Col span={12}>
-                    <Carousel>
-                      <div />
-                      <div />
-                      <div />
-                    </Carousel>
+                  <Col flex={1}>
+                    <Form.Item name="linkQr" label="QR code">
+                      <Input />
+                    </Form.Item>
                   </Col>
-                  <Col span={12}>
+                  <Col>
                     <Form.Item noStyle shouldUpdate>
-                      {({ getFieldValue }) => <QRCodeSVG value={getFieldValue('linkQr')} />}
+                      {({ getFieldValue }) => <QRCodeSVG value={getFieldValue('linkQr')} size={60} />}
                     </Form.Item>
                   </Col>
                 </Row>
+                <Form.Item name="images" noStyle />
+                <Form.Item noStyle shouldUpdate>
+                  {({ getFieldValue }) => {
+                    const images = getFieldValue('images') as StationType['images'];
+                    return (
+                      <>
+                        <Carousel>
+                          {images?.map((image) => (
+                            <Image key={image?.imageId} src={image?.imageId || ''} height={160} />
+                          ))}
+                          <Uploader height={160} />
+                        </Carousel>
+                      </>
+                    );
+                  }}
+                </Form.Item>
                 <Box flex={1} />
-                <Form.Item label="Коннекторы" valuePropName="checked">
-                  <Checkbox />
+                <Form.Item label="Коннекторы" name="coonectorType">
+                  <ConnectorField />
                 </Form.Item>
               </Box>
             </Col>
