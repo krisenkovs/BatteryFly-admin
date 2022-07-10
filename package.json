@@ -15,7 +15,8 @@
     "last 2 Safari versions"
   ],
   "scripts": {
-    "start": "webpack serve --config webpack.dev.js",
+    "start": "serve -s dist -p 8080",
+    "dev": "webpack serve --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
@@ -31,7 +32,8 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router": "^6.3.0",
-    "react-router-dom": "^6.3.0"
+    "react-router-dom": "^6.3.0",
+    "serve": "^13.0.4"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^3.1.1",
