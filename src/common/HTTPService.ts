@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 
 export class HTTPService {
   private instance = axios.create({ baseURL: 'http://174.138.106.191:8080' });
@@ -18,8 +18,8 @@ export class HTTPService {
     return this.instance.get(path) as Promise<O>;
   }
 
-  post<I, O>(path: string, data: I) {
-    return this.instance.post(path, data) as Promise<O>;
+  post<I, O>(path: string, data: I, options?: AxiosRequestConfig) {
+    return this.instance.post(path, data, options) as Promise<O>;
   }
 
   put<I>(path: string, data: I) {

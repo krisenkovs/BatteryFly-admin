@@ -1,10 +1,13 @@
+import { SimpleStore } from 'common/SimpleStore';
+import { API } from 'constant';
 import { fromPromise, PromiseObserver } from 'helpers/PromiseObserver';
 import { action, makeObservable, observable } from 'mobx';
 
-export class Store {
-  savePromise?: PromiseObserver<void> = undefined;
+export class Store extends SimpleStore {
+  savePromise?: PromiseObserver<string> = undefined;
 
   constructor() {
+    super();
     makeObservable(this, {
       savePromise: observable,
       save: action.bound,
@@ -12,9 +15,14 @@ export class Store {
   }
 
   save(file: File) {
+    const formData = new FormData();
+    formData.append('image', file);
+
     this.savePromise = fromPromise(
-      new Promise<void>((resolve) => {
-        resolve();
+      this.httpService.post(`${API.IMAGE}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       }),
     );
   }

@@ -1,10 +1,11 @@
-import { Carousel, Col, Form, Image, Input, InputNumber, message, Modal, Row, Switch } from 'antd';
+import { Carousel, Col, Form, Input, InputNumber, message, Modal, Row, Switch } from 'antd';
 import { observer } from 'mobx-react';
 import { ConnectorField } from 'pages/StationsPage/EditDialog/ConnectorField';
 import { QRCodeSVG } from 'qrcode.react';
 import React, { FC, useEffect } from 'react';
 
 import { Box } from 'components/Box';
+import { Image } from 'components/Image';
 import { Text } from 'components/Text';
 import { Uploader } from 'components/Uploader';
 
@@ -45,6 +46,18 @@ export const EditDialog: FC<Props> = observer(({ onSuccess }) => {
 
   function handleOk() {
     form.validateFields().then((values) => saveItem(values));
+  }
+
+  function handleAddFile(id?: string) {
+    const images = form.getFieldValue('images') || [];
+    form.setFields([{ name: 'images', value: [...images, { imageId: id }] }]);
+  }
+
+  function handleDeleteFile(id?: string) {
+    if (id) {
+      const images = (form.getFieldValue('images') || []) as StationType['images'];
+      form.setFields([{ name: 'images', value: images?.filter((item) => item?.imageId !== id) }]);
+    }
   }
 
   return (
@@ -121,14 +134,14 @@ export const EditDialog: FC<Props> = observer(({ onSuccess }) => {
                 <Form.Item name="images" noStyle />
                 <Form.Item noStyle shouldUpdate>
                   {({ getFieldValue }) => {
-                    const images = getFieldValue('images') as StationType['images'];
+                    const images = (getFieldValue('images') || []) as StationType['images'];
                     return (
                       <>
                         <Carousel>
                           {images?.map((image) => (
-                            <Image key={image?.imageId} src={image?.imageId || ''} height={160} />
+                            <Image key={image?.imageId} id={image?.imageId} height={160} onDelete={handleDeleteFile} className='stations_form_image'/>
                           ))}
-                          <Uploader height={160} />
+                          <Uploader height={160} onAddFile={handleAddFile} />
                         </Carousel>
                       </>
                     );

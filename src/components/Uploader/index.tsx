@@ -1,5 +1,6 @@
 import { InboxOutlined } from '@ant-design/icons';
 import Dragger from 'antd/lib/upload/Dragger';
+import { observer } from 'mobx-react';
 import React, { FC, useEffect, useState } from 'react';
 
 import { Icon } from 'components/Icon';
@@ -8,21 +9,21 @@ import { Store } from 'components/Uploader/store';
 
 type Props = {
   height?: number;
-  onAddFile?: () => void;
+  onAddFile?: (id?: string) => void;
 };
 
-export const Uploader: FC<Props> = ({ height, onAddFile }) => {
+export const Uploader: FC<Props> = observer(({ height, onAddFile }) => {
   const [store] = useState(new Store());
 
   useEffect(() => {
     if (store.savePromise?.fulfilled) {
-      onAddFile?.();
+      onAddFile?.(store.savePromise?.value);
     }
-  }, [store.savePromise]);
+  }, [store.savePromise?.fulfilled]);
 
   function handleChange(file: File) {
     store.save(file);
-    return true;
+    return false;
   }
 
   return (
@@ -35,4 +36,4 @@ export const Uploader: FC<Props> = ({ height, onAddFile }) => {
       </Text>
     </Dragger>
   );
-};
+});

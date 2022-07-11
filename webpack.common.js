@@ -10,8 +10,8 @@ module.exports = {
   entry: [join(__dirname, 'src', 'index.tsx')],
   output: {
     path: outputFolderPath,
-    filename: '[name].[fullhash].js',
-    assetModuleFilename: '[name].[fullhash].[ext]',
+    filename: 'js/[name].[fullhash].js',
+    assetModuleFilename: '[name][ext]',
   },
   module: {
     rules: [
@@ -51,10 +51,16 @@ module.exports = {
       {
         test: /\.(eot|otf|ttf|woff|woff2)$/,
         type: 'asset/resource',
+        generator: {
+          filename: 'fonts/[name][ext]',
+        },
       },
       {
         test: /\.(jpg|png|gif)$/,
         type: 'asset/inline',
+        generator: {
+          filename: 'images/[name][ext]',
+        },
       },
     ],
   },
@@ -65,8 +71,8 @@ module.exports = {
       template: join(__dirname, 'src', 'index.html'),
     }),
     new MiniCssExtractPlugin({
-      filename: '[name].[contenthash].css',
-      chunkFilename: '[id].[contenthash].css',
+      filename: 'css/[name].[contenthash].css',
+      chunkFilename: 'css/[id].[contenthash].css',
     }),
 
     new CopyPlugin({
