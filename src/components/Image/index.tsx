@@ -84,7 +84,7 @@ export const Image: FC<Props> = ({ height = 200, width, className, id, onDelete,
         <AntImage preview={false} src={`https://174.138.106.191:8443${API.IMAGE}/${id}` || ''} style={imageStyle} />
         <div className="image_preview">
           <AntImage.PreviewGroup preview={{ visible, onVisibleChange: (vis) => setVisible(vis) }}>
-            <AntImage src={`http://174.138.106.191:8080${API.IMAGE}/${id}` || ''} />
+            <AntImage src={`https://174.138.106.191:8443${API.IMAGE}/${id}` || ''} />
           </AntImage.PreviewGroup>
         </div>
       </>
