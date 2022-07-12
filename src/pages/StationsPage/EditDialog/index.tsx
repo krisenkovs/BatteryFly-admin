@@ -32,14 +32,14 @@ export const EditDialog: FC<Props> = observer(({ onSuccess }) => {
 
   useEffect(() => {
     if (savePromise?.error) {
-      message.error('Произошла ошибка');
+      message.error('Ошибка при сохранении станции');
     }
   }, [savePromise?.error]);
 
   useEffect(() => {
     if (savePromise?.fulfilled) {
       close();
-      message.success('Зарядная станция успешно добавлена');
+      message.success('Зарядная станция успешно добавлена/изменена');
       onSuccess?.();
     }
   }, [savePromise?.fulfilled]);
@@ -139,7 +139,13 @@ export const EditDialog: FC<Props> = observer(({ onSuccess }) => {
                       <>
                         <Carousel>
                           {images?.map((image) => (
-                            <Image key={image?.imageId} id={image?.imageId} height={160} onDelete={handleDeleteFile} className='stations_form_image'/>
+                            <Image
+                              key={image?.imageId}
+                              id={image?.imageId}
+                              height={160}
+                              onDelete={handleDeleteFile}
+                              className="stations_form_image"
+                            />
                           ))}
                           <Uploader height={160} onAddFile={handleAddFile} />
                         </Carousel>

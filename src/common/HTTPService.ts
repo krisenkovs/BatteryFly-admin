@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig } from 'axios';
 
 export class HTTPService {
-  private instance = axios.create({ baseURL: 'http://174.138.106.191:8080' });
+  private instance = axios.create({ baseURL: 'https://174.138.106.191:8443'});
 
   constructor() {
     this.instance.interceptors.response.use(
