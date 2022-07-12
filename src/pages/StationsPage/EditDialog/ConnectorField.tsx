@@ -27,7 +27,7 @@ export const ConnectorField: FC<Props> = ({ value, onChange }) => {
             <Connector1 />
           </Icon>
 
-          <Switch checked={!!value?.connector1} onChange={(checked) => handleChange('connector1', checked)} />
+          <Switch disabled checked={!!value?.connector1} onChange={(checked) => handleChange('connector1', checked)} />
         </Box>
       </Col>
       <Col>
@@ -36,7 +36,7 @@ export const ConnectorField: FC<Props> = ({ value, onChange }) => {
             <Connector2 />
           </Icon>
 
-          <Switch checked={!!value?.connector2} onChange={(checked) => handleChange('connector2', checked)} />
+          <Switch disabled checked={!!value?.connector2} onChange={(checked) => handleChange('connector2', checked)} />
         </Box>
       </Col>
       <Col>
@@ -45,7 +45,7 @@ export const ConnectorField: FC<Props> = ({ value, onChange }) => {
             <Connector3 />
           </Icon>
 
-          <Switch checked={!!value?.connector3} onChange={(checked) => handleChange('connector3', checked)} />
+          <Switch disabled checked={!!value?.connector3} onChange={(checked) => handleChange('connector3', checked)} />
         </Box>
       </Col>
       <Col>
@@ -54,7 +54,7 @@ export const ConnectorField: FC<Props> = ({ value, onChange }) => {
             <Connector4 />
           </Icon>
 
-          <Switch checked={!!value?.connector4} onChange={(checked) => handleChange('connector4', checked)} />
+          <Switch disabled checked={!!value?.connector4} onChange={(checked) => handleChange('connector4', checked)} />
         </Box>
       </Col>
     </Row>

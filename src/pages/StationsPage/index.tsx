@@ -26,12 +26,12 @@ export const StationsPage = observer(() => {
   }, [fetchData, destroy]);
 
   useEffect(() => {
-    deleteItemPromise?.error && message.error('This is an error message');
+    deleteItemPromise?.error && message.error('Ошибка при удалении станции');
   }, [deleteItemPromise?.error]);
 
   useEffect(() => {
     if (deleteItemPromise?.fulfilled) {
-      message.success('This is an success message');
+      message.success('Зарядная станция удалена');
       fetchData();
     }
   }, [deleteItemPromise?.fulfilled]);
@@ -69,7 +69,7 @@ export const StationsPage = observer(() => {
             + Новая станция
           </Button>
         </Box>
-        <Box paddingLeft="xss" paddingRight="xss" paddingTop="lg" paddingBottom="lg" flexDirection="column" flex={1}>
+        <Box paddingLeft="xs" paddingRight="xs" paddingTop="xs" paddingBottom="xs" flexDirection="column" flex={1}>
           <Table
             rowKey="id"
             loading={dataPromise?.pending}
@@ -115,6 +115,7 @@ export const StationsPage = observer(() => {
               {
                 key: 'actions',
                 align: 'right',
+                width: '50px',
                 render: (value, record) => (
                   <Dropdown
                     overlay={
